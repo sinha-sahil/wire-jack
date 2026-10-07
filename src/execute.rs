@@ -208,7 +208,7 @@ fn classify_body(
 
     if media
         .as_deref()
-        .is_some_and(|m| m == "application/json" || m.ends_with("+json"))
+        .is_some_and(|m| m == "application/json" || m == "text/json" || m.ends_with("+json"))
     {
         if let Ok(value) = serde_json::from_slice(bytes) {
             return (None, Some(value));
