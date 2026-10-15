@@ -190,7 +190,8 @@ What the response-phase template receives at `input.response`.
 | Module | Role |
 |---|---|
 | **`Template`** | Re-exported `temple_dsl::Template` — `compile`, `to_bytes`, `from_bytes`. The contract itself. |
-| **`run`** (`src/render.rs`) | Injects the `phase` flag, renders the request into an `ApiRequest`, executes it, renders the response phase. The single public entry point. |
+| **`run`** (`src/render.rs`) | Injects the `phase` flag, renders the request into an `ApiRequest`, executes it, renders the response phase. |
+| **`render_request` / `render_response`** (`src/render.rs`) | The two phases on their own, for a caller that acts between them — e.g. stops on a non-2xx before the response phase runs. |
 | **schema** (`src/request.rs`, `src/response.rs`) | `ApiRequest` (render target) and `ApiResponse`. |
 | **execute** (`src/execute.rs`) | reqwest-backed — encodes by `Content-Type`, applies auth / cookies / transport options / retries, classifies the response body. |
 

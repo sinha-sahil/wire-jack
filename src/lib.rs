@@ -22,7 +22,7 @@ pub mod request;
 pub mod response;
 
 pub use error::{Result, WireJackError};
-pub use render::{run, RunResult};
+pub use render::{render_request, render_response, run, RunResult};
 pub use request::{ApiRequest, Auth, Retry};
 pub use response::ApiResponse;
 
