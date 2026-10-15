@@ -1,5 +1,7 @@
 use serde_json::json;
-use wire_jack::{run, RunResult, Template, Value, WireJackError};
+use wire_jack::{
+    execute, render_request, render_response, run, RunResult, Template, Value, WireJackError,
+};
 
 mod common;
 
@@ -434,6 +436,29 @@ async fn render_error_on_error_status_names_the_status() {
         }
         other => panic!("expected render error, got: {other}"),
     }
+}
+
+#[tokio::test]
+async fn phases_compose_around_a_status_check() {
+    let src = r#"{{
+        input.phase == "request"
+          ? { "url": concat(input.request.base, input.request.path), "method": "GET" }
+          : { "method": input.response.body_json.method }
+    }}"#;
+    let template = compile(src);
+    let addr = common::spawn_echo().await;
+
+    let refused = render_request(&template, base(addr, vec![("path", s("/status/401"))])).unwrap();
+    let response = execute(&refused).await.unwrap();
+    assert!(!response.ok);
+    assert_eq!(response.status, 401);
+
+    let data = base(addr, vec![("path", s("/echo"))]);
+    let request = render_request(&template, data.clone()).unwrap();
+    let response = execute(&request).await.unwrap();
+    assert!(response.ok);
+    let output = render_response(&template, data, &response).unwrap();
+    assert_eq!(output["method"], "GET");
 }
 
 #[tokio::test]

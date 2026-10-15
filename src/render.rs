@@ -14,7 +14,7 @@ pub struct RunResult {
     pub response: ApiResponse,
 }
 
-fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequest> {
+pub fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequest> {
     let input = Value::obj([
         ("phase", Value::Str(PHASE_REQUEST.into())),
         ("request", data.into()),
@@ -24,7 +24,7 @@ fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequ
         .map_err(|e| WireJackError::Render(e.to_string()))
 }
 
-fn render_response(
+pub fn render_response(
     template: &Template,
     request: Value,
     response: &ApiResponse,
