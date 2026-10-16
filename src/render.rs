@@ -14,7 +14,8 @@ pub struct RunResult {
     pub response: ApiResponse,
 }
 
-fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequest> {
+/// Renders the request phase of `template` against `data` into an [`ApiRequest`].
+pub fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequest> {
     let input = Value::obj([
         ("phase", Value::Str(PHASE_REQUEST.into())),
         ("request", data.into()),
@@ -24,7 +25,9 @@ fn render_request(template: &Template, data: impl Into<Value>) -> Result<ApiRequ
         .map_err(|e| WireJackError::Render(e.to_string()))
 }
 
-fn render_response(
+/// Renders the response phase of `template` for `response`; `request` is the data the
+/// request phase rendered from.
+pub fn render_response(
     template: &Template,
     request: Value,
     response: &ApiResponse,

@@ -14,6 +14,10 @@
 //! ```
 //!
 //! [`run`] returns a [`RunResult`]: the rendered output plus the raw [`ApiResponse`].
+//!
+//! To act between the phases — for example, to stop on a non-2xx before the
+//! response phase runs — call the steps yourself: [`render_request`], [`execute()`],
+//! then [`render_response`].
 
 pub mod error;
 pub mod execute;
@@ -22,7 +26,7 @@ pub mod request;
 pub mod response;
 
 pub use error::{Result, WireJackError};
-pub use render::{run, RunResult};
+pub use render::{render_request, render_response, run, RunResult};
 pub use request::{ApiRequest, Auth, Retry};
 pub use response::ApiResponse;
 
