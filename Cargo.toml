@@ -1,6 +1,6 @@
 [package]
 name = "wire-jack"
-version = "1.0.1"
+version = "1.1.0"
 edition = "2021"
 description = "Construct API-call contracts with temple-dsl, render them against inputs, and execute the resulting requests"
 license = "MIT"
